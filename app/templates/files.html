@@ -5,13 +5,15 @@
 
 <!---->
 {% include 'flash_messages.html' %}
-
+<div class='flex-container'>
+  <div class="grid-container">
   {% for file in files %}
   
       
  <img class="images" alt="image" src="{{ url_for('get_image', filename = file) }}" />
 
   {% endfor %}
-
+</div>
+</div>
 <!---->
 {% endblock %}
