@@ -9,7 +9,8 @@ from app import app
 from flask import render_template, request, redirect, url_for, flash, session, abort
 from werkzeug.utils import secure_filename
 from app.forms import UploadForm
-
+from sys import platform
+from flask import send_from_directory
 ###
 # Routing for your application.
 ###
@@ -47,6 +48,34 @@ def upload():
             return redirect(url_for('home'))
     return render_template('upload.html', uploadform= uploadform)
 
+#### get_images
+@app.route('/uploads/<filename>')
+def get_image(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],filename)
+
+@app.route('/files')
+def files():
+    
+    photos=get_uploaded_images()
+    return render_template('files.html', files=photos)
+
+
+#get uploaded images
+def get_uploaded_images():
+    image_list=[]
+    rootdir = os.getcwd()
+    if platform=="win32":
+        for subdir, dirs, files in os.walk(rootdir + '\\uploads'):
+            for file in files:
+                image_list+=[file]
+            return image_list
+        return image_list
+    else:
+        for subdir, dirs, files in os.walk(rootdir + '/uploads'):
+            for file in files:
+                image_list+=[file]
+            return image_list
+        return image_list     
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
