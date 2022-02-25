@@ -55,7 +55,6 @@ def get_image(filename):
 
 @app.route('/files')
 def files():
-    
     photos=get_uploaded_images()
     return render_template('files.html', files=photos)
 
